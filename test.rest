@@ -1,0 +1,39 @@
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+    "username" : "linlin", 
+    "password" : "1234fdsf", 
+    "email" : "lancellq@gmail.com"
+}
+
+###
+
+POST http://localhost:3000/confirm-signup
+Content-Type: application/json
+
+{
+    "username": "linlin",
+    "code": "706849"
+}
+
+###
+
+POST http://localhost:3000/request-new-code
+Content-Type: application/json
+
+{
+    "username": "linlin",
+}
+
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "linlin",
+    "password": "TestPassword123!"
+}
+
