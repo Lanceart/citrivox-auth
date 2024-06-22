@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
 const axios = require('axios');
 
+const { AuthenticationDetails, CognitoUser, CognitoUserPool } = require('amazon-cognito-identity-js');
+
 
 require('dotenv').config();
 
@@ -138,6 +140,54 @@ app.post('/login', async (req, res) => {
     }
   });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//validate process
+const poolData = {
+    UserPoolId: process.env.AWS_POOL_ID,
+    ClientId: process.env.AWS_COGNITO_CLIENTID
+};
+const userPool = new CognitoUserPool(poolData);
+
+app.get('/validate-accesstoken', (req, res) =>{
+    const token = req.headers.authorization.split(' ')[1];
+
+    // console.log('mytoken', token)
+    if (!token) {
+        return res.status(400).json({ error: 'Access token not provided' });
+    }
+
+    const params = {
+        AccessToken: token
+    };
+
+    try{
+    cognito.getUser(params, (err, data) => {
+        if (err) {
+            // console.error('Error validating access token:', err);
+            res.status(401).json({ error: 'Access token is invalid' });
+        } else {
+            res.status(200).json({ message: 'Access token is valid' });
+        }
+    }
+    );
+    }catch (err) {
+        res.status(400).send(' Error validating access token ');
+    }
+})
 
 app.listen(port, ()=>{
     console.log(`Server is running on http://localhost:${port}`)
